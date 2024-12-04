@@ -5,11 +5,13 @@ import FileDisplay from './components/FileDisplay'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [audioStream, setAudioStream] = useState(null)
 
   return (
     <>
-      <FileDisplay/>
+      <Header /> 
+      <HomePage/>
     </>
   )
 }
