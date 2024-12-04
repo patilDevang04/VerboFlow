@@ -2,12 +2,13 @@ import React from 'react'
 import { useState, useRef , useEffect} from 'react';
 
 export default function HomePage(props) {
-
+    const { setAudioStream, setFile } = props
+    
     const mimeType = 'audio/webm'
     const [audioChunks, setAudioChunks] = useState([])
     const [recordingStatus, setRecordingStatus] = useState('inactive')
     const [duration, setDuration] = useState(0)
-    const [file, setFile] = useState(null); 
+    
 
     const mediaRecorder = useRef(null)
 
@@ -57,7 +58,7 @@ export default function HomePage(props) {
         mediaRecorder.current.p
         mediaRecorder.current.onstop = () => {
             const audioBlob = new Blob(audioChunks, { type: mimeType })
-            const audioUrl = URL.createObjectURL(audioBlob);
+            setAudioStream(audioBlob)
             setAudioChunks([]);
             setDuration(0);
         }

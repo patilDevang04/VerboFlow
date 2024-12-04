@@ -6,12 +6,16 @@ import FileDisplay from './components/FileDisplay'
 
 function App() {
 
+  const [file, setFile] = useState(null)
   const [audioStream, setAudioStream] = useState(null)
+
+  const isAudioAvailable = file || audioStream
 
   return (
     <>
       <Header /> 
-      <HomePage/>
+      {isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream}/> : <HomePage  setFile={setFile} setAudioStream={setAudioStream}/>}
+      
     </>
   )
 }
