@@ -11,10 +11,22 @@ function App() {
 
   const isAudioAvailable = file || audioStream
 
+  function handleAudioReset() { 
+    setFile(null); 
+    setAudioStream(null);
+  }
+
+  async function handleFormSubmission() {
+    if (!file && !audioStream) { return }
+
+    console.log('submission completed ...');
+  }
+
   return (
     <>
       <Header /> 
-      {isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream}/> : <HomePage  setFile={setFile} setAudioStream={setAudioStream}/>}
+      {isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset = {handleAudioReset} handleFormSubmission = {handleFormSubmission}/> 
+      : <HomePage  setFile={setFile} setAudioStream={setAudioStream}/>}
       
     </>
   )
