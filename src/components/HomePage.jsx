@@ -7,6 +7,8 @@ export default function HomePage(props) {
     const [audioChunks, setAudioChunks] = useState([])
     const [recordingStatus, setRecordingStatus] = useState('inactive')
     const [duration, setDuration] = useState(0)
+    const [file, setFile] = useState(null); 
+
     const mediaRecorder = useRef(null)
 
     async function startRecording() { 
@@ -85,7 +87,11 @@ export default function HomePage(props) {
                     <i className={"fa-solid duration-200 fa-microphone " + (recordingStatus === 'recording' ? ' text-rose-300' : "")}></i>
                 </div>
             </button>
-            <p className='text-base'>Or <label className='text-blue-400 cursor-pointer hover:text-blue-600 duration-200'>upload <input className='hidden' type='file' accept='.mp3,.wave' /></label> a mp3 file</p>
+            <p className='text-base'>Or <label className='text-blue-400 cursor-pointer hover:text-blue-600 duration-200'>upload <input onChange = {(e) => {
+                const tempFile = e.target.files[0]
+                setFile(tempFile)
+                
+            }} className='hidden' type='file' accept='.mp3,.wave' /></label> a mp3 file</p>
         </main>
     )
 }
