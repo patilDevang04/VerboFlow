@@ -37,9 +37,8 @@ function App() {
           console.log('LOADING')
           break;
         case 'RESULT':
-          const text = e.data.results[0].text;
-          console.log(text)
-          setOutput(text);
+          console.log(e.data.results)
+          setOutput(e.data.results);
           break;
         case 'INFERENCE_DONE':
           console.log("DONE")
@@ -79,7 +78,11 @@ function App() {
 
   return (
     <>
-      <Information/>
+      
+      <div className='flex flex-col max-w-[1000px] mx-auto w-full'>
+        <Header /> 
+        {output !== null ? <Information output = {output}/> : (isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset={handleAudioReset} handleFormSubmission={handleFormSubmission} /> : <HomePage setFile={setFile} setAudioStream={setAudioStream} />)}
+      </div>
       
     </>
   )
