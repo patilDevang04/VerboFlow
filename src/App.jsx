@@ -3,12 +3,14 @@ import Header from './components/Header'
 import HomePage from './components/HomePage'
 import FileDisplay from './components/FileDisplay'
 import { MessageTypes } from './utils/constants'
+import TranscribedText from './components/TranscribedText'
 
 function App() {
 
   const [file, setFile] = useState(null)
   const [audioStream, setAudioStream] = useState(null)
-
+  const [output, setOutput] = useState(null);
+ 
   const isAudioAvailable = file || audioStream
 
   function handleAudioReset() { 
@@ -34,7 +36,9 @@ function App() {
           console.log('LOADING')
           break;
         case 'RESULT':
-          console.log(e.data.results)
+          const text = e.data.results[0].text;
+          console.log(text)
+          setOutput(text);
           break;
         case 'INFERENCE_DONE':
           console.log("DONE")
@@ -74,9 +78,10 @@ function App() {
 
   return (
     <>
-      <Header /> 
-      {isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset = {handleAudioReset} handleFormSubmission = {handleFormSubmission}/> 
-      : <HomePage  setFile={setFile} setAudioStream={setAudioStream}/>}
+      <div className='flex flex-col max-w-[1000px] mx-auto w-full'>
+        <Header /> 
+        {output !== null ? <TranscribedText text={output} /> : (isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset={handleAudioReset} handleFormSubmission={handleFormSubmission} /> : <HomePage setFile={setFile} setAudioStream={setAudioStream} />)}
+      </div>
       
     </>
   )
