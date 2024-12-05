@@ -9,6 +9,19 @@ export default function Information(props) {
 
     const textElement = (tab === 'transcription' ? output.map(v => v.text).join(' ') : ''); 
 
+    function handleCopy() { 
+        navigator.clipboard.writeText(textElement);
+    }
+
+    function handleDownload() { 
+        const element = document.createElement("a")
+        const file = new Blob([textElement], { type: 'text/plain' })
+        element.href = URL.createObjectURL(file)
+        element.download = `Freescribe_${new Date().toString()}.txt`
+        document.body.appendChild(element)
+        element.click()
+    }
+
     return (
         <main className='flex-1  p-4 flex flex-col gap-3 text-center sm:gap-4 justify-center pb-20 max-w-prose w-full mx-auto'>
             <h1 className='font-semibold text-4xl sm:text-5xl md:text-6xl whitespace-nowrap'>Your <span className='text-blue-400 bold'>Transcription</span></h1>
@@ -25,10 +38,10 @@ export default function Information(props) {
                     )}
             </div>
             <div className='flex items-center gap-4 mx-auto '>
-                <button  title="Copy" className='bg-white  hover:text-blue-500 duration-200 text-blue-300 px-2 aspect-square grid place-items-center rounded'>
+                <button  title="Copy" onClick = {handleCopy} className='bg-white  hover:text-blue-500 duration-200 text-blue-300 px-2 aspect-square grid place-items-center rounded'>
                     <i className="fa-solid fa-copy"></i>
                 </button>
-                <button  title="Download" className='bg-white  hover:text-blue-500 duration-200 text-blue-300 px-2 aspect-square grid place-items-center rounded'>
+                <button  title="Download" onClick = {handleDownload} className='bg-white  hover:text-blue-500 duration-200 text-blue-300 px-2 aspect-square grid place-items-center rounded'>
                     <i className="fa-solid fa-download"></i>
                 </button>
 
