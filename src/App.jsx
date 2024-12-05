@@ -4,6 +4,7 @@ import HomePage from './components/HomePage'
 import FileDisplay from './components/FileDisplay'
 import { MessageTypes } from './utils/constants'
 import TranscribedText from './components/TranscribedText'
+import Information from './components/Information'
 
 function App() {
 
@@ -78,10 +79,7 @@ function App() {
 
   return (
     <>
-      <div className='flex flex-col max-w-[1000px] mx-auto w-full'>
-        <Header /> 
-        {output !== null ? <TranscribedText text={output} /> : (isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset={handleAudioReset} handleFormSubmission={handleFormSubmission} /> : <HomePage setFile={setFile} setAudioStream={setAudioStream} />)}
-      </div>
+      <Information/>
       
     </>
   )
