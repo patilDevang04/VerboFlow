@@ -5,12 +5,14 @@ import FileDisplay from './components/FileDisplay'
 import { MessageTypes } from './utils/constants'
 import TranscribedText from './components/TranscribedText'
 import Information from './components/Information'
+import Transcribing from './components/Transcribing'
 
 function App() {
 
   const [file, setFile] = useState(null)
   const [audioStream, setAudioStream] = useState(null)
   const [output, setOutput] = useState(null);
+  const [loading, setLoading] = useState(false); 
  
   const isAudioAvailable = file || audioStream
 
@@ -35,6 +37,7 @@ function App() {
           break;
         case 'LOADING':
           console.log('LOADING')
+          setLoading(true);
           break;
         case 'RESULT':
           console.log(e.data.results)
@@ -81,7 +84,10 @@ function App() {
       
       <div className='flex flex-col max-w-[1000px] mx-auto w-full'>
         <Header /> 
-        {output !== null ? <Information output = {output}/> : (isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset={handleAudioReset} handleFormSubmission={handleFormSubmission} /> : <HomePage setFile={setFile} setAudioStream={setAudioStream} />)}
+        {output ? <Information output = {output}/> : 
+        (loading ? <Transcribing/> : 
+        (isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset={handleAudioReset} handleFormSubmission={handleFormSubmission} /> : 
+        <HomePage setFile={setFile} setAudioStream={setAudioStream} />))}
       </div>
       
     </>
