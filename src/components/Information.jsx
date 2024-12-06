@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import TranscribedText from './TranscribedText';
+import Translation from './Translation';
 
 export default function Information(props) {
     const {output} = props; 
@@ -34,7 +35,7 @@ export default function Information(props) {
                 {tab === 'transcription' ? (
                         <TranscribedText text={textElement} />
                     ) : (
-                        <div> Translation should appear here </div>
+                        <Translation/>
                     )}
             </div>
             <div className='flex items-center gap-4 mx-auto '>
