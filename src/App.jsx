@@ -13,7 +13,7 @@ function App() {
   const [audioStream, setAudioStream] = useState(null)
   const [output, setOutput] = useState(null);
   const [loading, setLoading] = useState(false); 
- 
+  const [downloading, setDownloading] = useState(false);
   const isAudioAvailable = file || audioStream
 
   function handleAudioReset() { 
@@ -34,6 +34,7 @@ function App() {
       switch (e.data.type) {
         case 'DOWNLOADING':
           console.log('DOWNLOADING')
+          setDownloading(true); 
           break;
         case 'LOADING':
           console.log('LOADING')
@@ -82,10 +83,10 @@ function App() {
   return (
     <>
       
-      <div className='flex flex-col max-w-[1000px] mx-auto w-full'>
+      <div className='flex flex-col max-w-[1000px] mx-auto w-full justify-center'>
         <Header /> 
         {output ? <Information output = {output}/> : 
-        (loading ? <Transcribing/> : 
+        (loading ? <Transcribing downloading = {downloading} /> : 
         (isAudioAvailable ? <FileDisplay file={file} audioStream={audioStream} handleAudioReset={handleAudioReset} handleFormSubmission={handleFormSubmission} /> : 
         <HomePage setFile={setFile} setAudioStream={setAudioStream} />))}
       </div>
