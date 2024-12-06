@@ -6,9 +6,11 @@ import Translation from './Translation';
 export default function Information(props) {
     const {output} = props; 
     const [tab, setTab] = useState('transcription')
-    console.log(output)
+    const [translation, setTranslation] = useState(null)
+    const [toLanguage, setToLanguage] = useState('Select language')
+    const [translating, setTranslating] = useState(false)
 
-    const textElement = (tab === 'transcription' ? output.map(v => v.text).join(' ') : ''); 
+    const textElement = tab === 'transcription' ? output.map(val => val.text) : translation || '';
 
     function handleCopy() { 
         navigator.clipboard.writeText(textElement);
@@ -23,6 +25,18 @@ export default function Information(props) {
         element.click()
     }
 
+    function generateTranslation() {
+        console.log('Generating translation');
+        if (translating || toLanguage === 'Select language') {
+            return
+        }
+
+        setTranslating(true)
+
+        setTimeout(10000);
+    }
+
+
     return (
         <main className='flex-1  p-4 flex flex-col gap-3 text-center sm:gap-4 justify-center pb-20 max-w-prose w-full mx-auto'>
             <h1 className='font-semibold text-4xl sm:text-5xl md:text-6xl whitespace-nowrap'>Your <span className='text-blue-400 bold'>Transcription</span></h1>
@@ -35,7 +49,7 @@ export default function Information(props) {
                 {tab === 'transcription' ? (
                         <TranscribedText text={textElement} />
                     ) : (
-                        <Translation/>
+                        <Translation  toLanguage={toLanguage} translating={translating} textElement={textElement} setTranslating={setTranslating} setTranslation={setTranslation} setToLanguage={setToLanguage} generateTranslation={generateTranslation} />
                     )}
             </div>
             <div className='flex items-center gap-4 mx-auto '>
