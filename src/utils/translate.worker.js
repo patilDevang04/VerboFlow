@@ -1,4 +1,4 @@
-
+import { env } from '@xenova/transformers';
 import { pipeline } from '@xenova/transformers';
 
 class MyTranslationPipeline {
@@ -8,6 +8,8 @@ class MyTranslationPipeline {
 
     static async getInstance(progress_callback = null) {
         if (this.instance === null) {
+            env.allowLocalModels = false;
+            env.useBrowserCache = false;
             this.instance = pipeline(this.task, this.model, { progress_callback });
         }
 

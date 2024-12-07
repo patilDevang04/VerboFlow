@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState , useEffect, useRef} from 'react'
 import TranscribedText from './TranscribedText';
 import Translation from './Translation';
 
@@ -9,6 +9,40 @@ export default function Information(props) {
     const [translation, setTranslation] = useState(null)
     const [toLanguage, setToLanguage] = useState('Select language')
     const [translating, setTranslating] = useState(false)
+
+    const worker = useRef()
+
+    useEffect(() => {
+        if (!worker.current) {
+            worker.current = new Worker(new URL('../utils/translate.worker.js', import.meta.url), {
+                type: 'module'
+            })
+        }
+
+        const onMessageReceived = async (e) => {
+            switch (e.data.status) {
+                case 'initiate':
+                    console.log('DOWNLOADING')
+                    break;
+                case 'progress':
+                    console.log('LOADING')
+                    break;
+                case 'update':
+                    setTranslation(e.data.output)
+                    console.log(e.data.output)
+                    break;
+                case 'complete':
+                    setTranslating(false)
+                    console.log("DONE")
+                    break;
+            }
+        }
+
+        worker.current.addEventListener('message', onMessageReceived)
+
+        return () => worker.current.removeEventListener('message', onMessageReceived)
+    })
+
 
     const textElement = tab === 'transcription' ? output.map(val => val.text) : translation || '';
 
@@ -31,9 +65,14 @@ export default function Information(props) {
             return
         }
 
-        setTranslating(true)
+        setTranslating(true);
 
-        setTimeout(10000);
+        worker.current.postMessage({
+            text: output.map(val => val.text),
+            src_lang: 'eng_Latn',
+            tgt_lang: toLanguage
+        })
+
     }
 
 
